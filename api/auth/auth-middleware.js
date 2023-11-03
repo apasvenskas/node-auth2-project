@@ -9,9 +9,9 @@ const restricted = (req, res, next) => {
   }
   jwt.verify(token, JWT_SECRET, (err, decodedToken) => {
     if (err) {
-      next({ status: 401, message: 'Token required' })
+      next({ status: 401, message: 'Token invalid' })
     } else {
-      req.decodedToken =
+      req.decodedToken = decodedToken
       next()
     }
   })
@@ -76,7 +76,7 @@ const checkUsernameExists = async (req, res, next) => {
 const validateRoleName = (req, res, next) => {
  const role_name = req.body.role_name ? req.body.role_name.trim() : 'student';
  if (role_name === 'admin') {
-   next({ status: 422, message: 'Role name cannot be admin' });
+   next({ status: 422, message: 'can not be admin' });
  } else if (role_name.length > 32) {
    next({ status: 422, message: 'Role name can not be longer than 32 chars' });
  } else {
